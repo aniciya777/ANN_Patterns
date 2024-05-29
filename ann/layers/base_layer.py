@@ -26,7 +26,7 @@ class BaseLayer(ABC):
         pass
 
     @abstractmethod
-    def forward(self, x: np.array) -> np.array:
+    def forward(self, x: np.ndarray) -> np.ndarray:
         """
         Алгоритм прямого распространения сигнала
 
@@ -36,7 +36,7 @@ class BaseLayer(ABC):
         pass
 
     @abstractmethod
-    def predict(self, x: np.array) -> np.array:
+    def predict(self, x: np.ndarray) -> np.ndarray:
         """
         Алгоритм распространения сигнала
 
@@ -46,7 +46,7 @@ class BaseLayer(ABC):
         pass
 
     @abstractmethod
-    def backward(self, y: np.array) -> None:
+    def backward(self, y: np.ndarray) -> np.ndarray:
         """
         Алгоритм обратного распространения сигнала
 

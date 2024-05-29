@@ -22,7 +22,7 @@ class Loss(ABC):
         pass
 
     @staticmethod
-    def backward(y_pred: array, y_true: array) -> np.array:
+    def backward(y_pred: array, y_true: array) -> np.ndarray:
         """
         Алгоритм обратного распространения сигнала
 

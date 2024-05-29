@@ -20,7 +20,7 @@ class FullLayer(BaseLayer):
         Конструктор класса FullLayer
 
         :param input_size: Размер входного вектора
-        :param output_size: Размер выходного вектора
+        :param size: Размер выходного вектора
         :param initializer: Инициализатор весов
         """
         super().__init__(**kwargs)
@@ -49,7 +49,10 @@ class FullLayer(BaseLayer):
         :param x: Входной вектор
         :return: Выходной вектор
         """
-        return np.array([neuron.backward(x) for neuron in self.__neurons])
+        result = np.zeros((*x.shape[:-1], self.__input_size), dtype=np.float64)
+        for i, neuron in enumerate(self):
+            result += neuron.backward(x[:, [i]])
+        return result
 
     def predict(self, x: np.ndarray) -> np.ndarray:
         """

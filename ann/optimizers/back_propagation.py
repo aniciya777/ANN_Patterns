@@ -1,5 +1,5 @@
+import ann
 from .optimizer import Optimizer
-from ..net import Network
 
 
 class BackPropagation(Optimizer):
@@ -7,13 +7,11 @@ class BackPropagation(Optimizer):
     Алгоритм обратного распространения ошибки
     """
 
-    def __init__(self, learning_rate: float = 0.01):
-        """
-        Конструктор класса
-
-        :param learning_rate: Скорость обучения
-        """
-        self.__learning_rate = learning_rate
-
-    def step(self, trainer: 'Trainer') -> None:
-        pass
+    def step(self, trainer: 'ann.Trainer') -> None:
+        model = trainer.network
+        for layer in reversed(model):
+            if isinstance(layer, ann.layers.FullLayer):
+                for neuron in layer:
+                    neuron.delta_weights *= self._learning_rate
+                    neuron.delta_bias *= self._learning_rate
+                    neuron.update()

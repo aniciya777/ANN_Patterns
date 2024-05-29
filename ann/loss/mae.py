@@ -22,7 +22,7 @@ class MAE(Loss):
         return np.mean(np.abs(y_pred - y_true))
 
     @staticmethod
-    def backward(y_pred: array, y_true: array) -> np.array:
+    def backward(y_pred: array, y_true: array) -> np.ndarray:
         """
         Вычисление градиента функции потерь
 

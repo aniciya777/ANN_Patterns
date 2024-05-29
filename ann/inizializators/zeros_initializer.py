@@ -16,4 +16,4 @@ class ZerosInitializer(BaseInitializer):
         :param shape: Размерность вектора весов
         :return: Вектор весов нейрона
         """
-        return np.zeros(shape)
+        return np.zeros(shape, dtype=np.longdouble)

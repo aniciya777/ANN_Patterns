@@ -4,6 +4,7 @@ from ..net import Network
 from ..loss.loss import Loss
 from ..optimizers import Optimizer
 from ..utils import convert_to_array, array
+from ..schedules import Schedule
 
 
 class Trainer:
@@ -14,7 +15,8 @@ class Trainer:
                  network: Network,
                  loss: Loss,
                  optimizer: Optimizer,
-                 verbose: bool = True) -> None:
+                 verbose: bool = True,
+                 scheduler: Schedule | None = None) -> None:
         """
         Конструктор класса
 
@@ -30,6 +32,9 @@ class Trainer:
         self.loss = loss
         self.optimizer = optimizer
         self.verbose = verbose
+        self.loss_train = None
+        self.loss_test = None
+        self.scheduler = scheduler
 
     def fit(self,
             x: array,
@@ -51,6 +56,9 @@ class Trainer:
         x = convert_to_array(x)
         y = convert_to_array(y)
         x_train, x_test, y_train, y_test = self.__split(x, y, test_size)
+        if self.scheduler is not None:
+            self.scheduler.set_trainer(self)
+            self.scheduler.start()
         for epoch in range(epochs):
             if shuffle:
                 x_train, y_train = self.__shuffle(x_train, y_train)
@@ -61,13 +69,17 @@ class Trainer:
                 y_batch = y_train[i:i + batch_size]
 
                 self.network.forward(x_batch)
-                self.network.backward(self.loss.backward(self.network.predict(x_batch), y_batch))
+                loss = self.loss.backward(self.network.predict(x_batch), y_batch)
+                self.network.backward(loss)
                 self.optimizer.step(self)
 
+            self.loss_train = self.loss.forward(self.network.predict(x_train), y_train)
+            self.loss_test = self.loss.forward(self.network.predict(x_test), y_test)
+            if self.scheduler is not None:
+                self.scheduler.step()
+                self.optimizer.learning_rate = self.scheduler.learning_rate
             if self.verbose:
-                loss_train = self.loss.forward(self.network.predict(x_train), y_train)
-                loss_test = self.loss.forward(self.network.predict(x_test), y_test)
-                print(f'Epoch: {epoch + 1}, loss_train: {loss_train}, loss_test: {loss_test}')
+                print(f'Epoch: {epoch + 1}, loss_train: {self.loss_train}, loss_test: {self.loss_test}')
 
     @staticmethod
     def __shuffle(x: np.ndarray, y: np.ndarray) -> (np.ndarray, np.ndarray):

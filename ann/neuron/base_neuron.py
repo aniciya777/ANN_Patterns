@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
 import numpy as np
-import numpy.dtypes
-from numpy import array
 
 from ..inizializators import BaseInitializer
 
@@ -22,7 +20,7 @@ class BaseNeuron(ABC):
         pass
 
     @abstractmethod
-    def forward(self, x: array) -> np.float64:
+    def forward(self, x: np.ndarray) -> np.longdouble:
         """
         Алгоритм прямого распространения сигнала
 
@@ -32,7 +30,7 @@ class BaseNeuron(ABC):
         pass
 
     @abstractmethod
-    def backward(self, x: array) -> np.float64:
+    def backward(self, x: np.ndarray) -> np.longdouble:
         """
         Алгоритм обратного распространения сигнала
 
@@ -42,7 +40,7 @@ class BaseNeuron(ABC):
         pass
 
     @abstractmethod
-    def predict(self, x: array) -> np.float64:
+    def predict(self, x: np.ndarray) -> np.longdouble:
         """
         Алгоритм распространения сигнала
 
@@ -53,7 +51,7 @@ class BaseNeuron(ABC):
 
     @property
     @abstractmethod
-    def weights(self) -> array:
+    def weights(self) -> np.ndarray:
         """
         Веса нейрона
 
@@ -63,7 +61,7 @@ class BaseNeuron(ABC):
 
     @property
     @abstractmethod
-    def bias(self) -> np.float64:
+    def bias(self) -> np.longdouble:
         """
         Смещение нейрона
 

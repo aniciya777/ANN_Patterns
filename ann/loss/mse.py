@@ -22,7 +22,7 @@ class MSE(Loss):
         return np.mean(np.power(y_pred - y_true, 2))
 
     @staticmethod
-    def backward(y_pred: array, y_true: array) -> np.array:
+    def backward(y_pred: array, y_true: array) -> np.ndarray:
         """
         Вычисление градиента функции потерь
 

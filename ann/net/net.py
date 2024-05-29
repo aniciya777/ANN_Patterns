@@ -30,7 +30,7 @@ class Network:
             self.__layers.append(new_layer)
         return self
 
-    def __prepare(self, x: array) -> np.array:
+    def __prepare(self, x: array) -> np.ndarray:
         """
         Подготовка входного вектора
 
@@ -40,12 +40,12 @@ class Network:
         x = convert_to_array(x)
         return x.reshape(-1, *self.__layers[0].size)
 
-    def __predict(self, x: array) -> np.array:
+    def __predict(self, x: array) -> np.ndarray:
         for layer in self.__layers:
             x = layer.forward(x)
         return x
 
-    def predict(self, x: array) -> np.array:
+    def predict(self, x: array) -> np.ndarray:
         """
         Предсказание нейронной сети
 
@@ -55,12 +55,12 @@ class Network:
         x = self.__prepare(x)
         return np.array(list(map(self.__predict, x)))
 
-    def __forward(self, x: array) -> np.array:
+    def __forward(self, x: array) -> np.ndarray:
         for layer in self.__layers:
             x = layer.forward(x)
         return x
 
-    def forward(self, x: array) -> np.array:
+    def forward(self, x: array) -> np.ndarray:
         """
         Алгоритм прямого распространения сигнала
 
@@ -77,10 +77,8 @@ class Network:
         :param y: Выходное значение нейронной сети
         """
         y = convert_to_array(y)
-        y = y.reshape(-1, *self.__layers[-1].size)
-        for layer in reversed(self.__layers):
+        for layer in reversed(self):
             y = layer.backward(y)
-        #     y = y.reshape(-1, *self.__layers[-1].size)
 
     def __iter__(self) -> Iterator[BaseLayer]:
         """
@@ -97,3 +95,12 @@ class Network:
         Паттерн "Iterator"
         """
         return reversed(self.__layers)
+
+    def __getitem__(self, index: int) -> BaseLayer:
+        """
+        Получение слоя по индексу
+
+        :param index: Индекс слоя
+        :return: Слой нейронной сети
+        """
+        return self.__layers[index]
