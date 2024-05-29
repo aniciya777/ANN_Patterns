@@ -13,3 +13,5 @@
 ошибок и т.п.
 
 **Остапчук Анастасия, гр. ПМИ-201**
+
+![Схема базы данных](https://raw.githubusercontent.com/aniciya777/ANN_Patterns/3fe0c37c48232f72ec9aeb101eae0d0c8849def4/diagrams/classes.svg)
